@@ -6,6 +6,8 @@ volumes:
   pgdata:
   opdata:
   grafana-data:
+  jenkins-data:
+  influx-data:
 
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
@@ -39,12 +41,47 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
     ports:
       - "3000:3000"
+    depends_on:
+      - influxdb
     volumes:
       - grafana-data:/var/lib/grafana
     networks:
       - frontend
     labels:
       - autoheal=true
+
+  influxdb:
+    image: influxdb:2.7
+    <<: *restart_policy
+    ports:
+      - "7000:7000"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=TCINdNJSlHjLLcy
+      - DOCKER_INFLUXDB_INIT_ORG=AniWay
+      - DOCKER_INFLUXDB_INIT_BUCKET=AniWayBucket
+    volumes:
+      - influx-data:/var/lib/influxdb2
+    networks:
+      - frontend
+    labels:
+      - autoheal=true
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    <<: *restart_policy
+    ports:
+      - "4000:4000"
+    volumes:
+      - jenkins-data:/var/jenkins_home # Для сохранения данных Jenkins
+    networks:
+      - frontend # Подключение к той же сети, что и прокси
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false -Dhudson.diyChunking=false -Djenkins.model.Jenkins.STRICT_FORWARDING=true
+      - JENKINS_OPTS=--httpPort=4000 --prefix=/
+    labels:
+      - autoheal=true # Включение автохила
 
   db:
     image: postgres:13
