@@ -51,3 +51,39 @@ https://grafana.aniway.space {
 
     log
 }
+
+http://jenkins.aniway.space {
+    redir https://jenkins.aniway.space{uri} permanent
+}
+
+https://jenkins.aniway.space {
+    reverse_proxy jenkins:4000 {
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Port 443
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-Scheme {scheme}
+    }
+
+    tls /etc/caddy/certs/jenkins.aniway.space.crt /etc/caddy/certs/jenkins.aniway.space.key
+
+    log
+}
+
+http://influxdb.aniway.space {
+    redir https://influxdb.aniway.space{uri} permanent
+}
+
+https://influxdb.aniway.space {
+    reverse_proxy influxdb:8086 {
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Port 443
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-Scheme {scheme}
+    }
+
+    tls /etc/caddy/certs/influxdb.aniway.space.crt /etc/caddy/certs/influxdb.aniway.space.key
+
+    log
+}
