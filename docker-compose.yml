@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: aniway_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aniway_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-securepassword}
+      POSTGRES_DB: ${POSTGRES_DB:-aniway_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - aniway_pgdata:/var/lib/postgresql/data
+      - ./AniWay.sql:/docker-entrypoint-initdb.d/AniWay.sql:ro
+
+volumes:
+  aniway_pgdata:
+    driver: local

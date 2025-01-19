@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/AniWayAPIGateway" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/AniWayAPIGateway" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/AniWayAuth" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/AniWayAuth" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/AniWayUserService" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/AniWayUserService" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/DataBaseBridge" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/DataBaseBridge" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/ImageCompressionService" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/ImageCompressionService" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/ImageRankService" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/ImageRankService" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Metricator" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Metricator" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
