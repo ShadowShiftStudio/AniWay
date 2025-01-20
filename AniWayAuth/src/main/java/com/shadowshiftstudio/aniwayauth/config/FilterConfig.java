@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfig {
 
-    @Bean
-    public FilterRegistrationBean<IpFilter> ipFilter() {
-        FilterRegistrationBean<IpFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new IpFilter());
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<IpFilter> ipFilter() {
+//        FilterRegistrationBean<IpFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new IpFilter());
+//        registrationBean.addUrlPatterns("/*");
+//        return registrationBean;
+//    }
 }

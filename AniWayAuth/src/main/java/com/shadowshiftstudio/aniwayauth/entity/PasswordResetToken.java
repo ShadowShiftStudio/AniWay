@@ -31,4 +31,8 @@ public class PasswordResetToken {
 
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
+
+    public boolean isExpired() {
+        return new Date().after(this.expiryDate);
+    }
 }
