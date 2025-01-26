@@ -21,25 +21,20 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
-
-    private PasswordResetTokenRepository passwordResetTokenRepository;
-
     private UserRepository repository;
-
     private JwtService jwtService;
-
     private RefreshTokenService refreshTokenService;
-
     private AuthenticationManager authenticationManager;
+    private LoginLogService loginLogService;
 
     @Autowired
-    public AuthenticationService(PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordResetTokenRepository, UserRepository repository, JwtService jwtService, RefreshTokenService refreshTokenService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(PasswordEncoder passwordEncoder, UserRepository repository, JwtService jwtService, RefreshTokenService refreshTokenService, AuthenticationManager authenticationManager, LoginLogService loginLogService) {
         this.passwordEncoder = passwordEncoder;
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.repository = repository;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
         this.authenticationManager = authenticationManager;
+        this.loginLogService = loginLogService;
     }
 
     public AuthenticationResponse register(RegisterRequest request) throws UsernameIsOccupiedException, EmailIsOccupiedException, UserNotFoundException {
@@ -57,6 +52,8 @@ public class AuthenticationService {
 
         String jwtToken = jwtService.generateToken(user);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getUsername());
+
+        loginLogService.saveLoginLog(user.getId());
 
         return AuthenticationResponse
                 .builder()
@@ -85,6 +82,8 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getUsername());
 
+        loginLogService.saveLoginLog(user.getId());
+
         return AuthenticationResponse
                 .builder()
                 .accessToken(jwtToken)
@@ -92,5 +91,16 @@ public class AuthenticationService {
                 .build();
     }
 
-
+    public AuthenticationResponse refreshToken(String refreshToken) throws RefreshTokenNotFoundException {
+        return refreshTokenService.findByToken(refreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String accessToken = jwtService.generateToken(user);
+                    return AuthenticationResponse.builder()
+                            .accessToken(accessToken)
+                            .token(refreshToken)
+                            .build();
+                }).orElseThrow(() -> new RefreshTokenNotFoundException("Refresh token not found"));
+    }
 }
